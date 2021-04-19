@@ -5,6 +5,7 @@ import Colors from "../constants/Colors";
 import AppText from "./AppText";
 
 const PlaceItem = ({ onPress, image, title, address }) => {
+  console.log("original", image);
   return (
     <View style={styles.root}>
       <TouchableNativeFeedback onPress={onPress}>
