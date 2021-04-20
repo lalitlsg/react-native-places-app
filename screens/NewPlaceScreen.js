@@ -6,6 +6,7 @@ import AppButton from "../components/AppButton";
 import AppInput from "../components/AppInput";
 import AppText from "../components/AppText";
 import ImagePickerContainer from "../components/ImagePickerContainer";
+import LocationPicker from "../components/LocationPicker";
 import Colors from "../constants/Colors";
 import { addPlace } from "../store/places-action";
 
@@ -38,6 +39,7 @@ const NewPlaceScreen = (props) => {
           value={title}
         />
         <ImagePickerContainer onImageTaken={selectedImageHandler} />
+        <LocationPicker />
         <AppButton
           buttonStyle={styles.buttonStyle}
           textStyle={styles.textStyle}
