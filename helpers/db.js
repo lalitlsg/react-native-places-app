@@ -21,6 +21,7 @@ export const init = () => {
 };
 
 export const insertPlace = (title, imageUri, address, lat, lng) => {
+  console.log("lat, lng", lat, lng);
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -44,6 +45,24 @@ export const fetchPlaces = () => {
       tx.executeSql(
         "SELECT * FROM places",
         [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+export const deletePlace = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM places WHERE id=?",
+        [id],
         (_, result) => {
           resolve(result);
         },

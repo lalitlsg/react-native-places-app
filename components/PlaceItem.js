@@ -1,11 +1,10 @@
 import React from "react";
 import { View, Image, TouchableNativeFeedback, StyleSheet } from "react-native";
-import { color } from "react-native-reanimated";
+
 import Colors from "../constants/Colors";
 import AppText from "./AppText";
 
 const PlaceItem = ({ onPress, image, title, address }) => {
-  console.log("original", image);
   return (
     <View style={styles.root}>
       <TouchableNativeFeedback onPress={onPress}>

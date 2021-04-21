@@ -1,8 +1,20 @@
 import * as FileSystem from "expo-file-system";
-import { fetchPlaces, insertPlace } from "../helpers/db";
+import { deletePlace, fetchPlaces, insertPlace } from "../helpers/db";
+import ENV from "../env";
 
 export const ADD_PLACE = "ADD_PLACE";
 export const SET_PLACES = "SET_PLACES";
+export const DELETE_PLACE = "DELETE_PLACE";
+
+export const removePlace = (id) => {
+  return async (dispatch) => {
+    const result = await deletePlace(id);
+    dispatch({
+      type: DELETE_PLACE,
+      id: id,
+    });
+  };
+};
 
 export const setPlaces = () => {
   return async (dispatch) => {
@@ -16,8 +28,23 @@ export const setPlaces = () => {
   };
 };
 
-export const addPlace = (title, imageUri) => {
+export const addPlace = (title, imageUri, location) => {
   return async (dispatch) => {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${ENV.GOOGLE_API_KEY}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong.");
+    }
+
+    const resData = await response.json();
+    if (!resData.results) {
+      throw new Error("Something went wrong.");
+    }
+
+    const address = resData.results[0].formatted_address;
+
     const fileName = imageUri.split("/").pop();
     const newPath = FileSystem.documentDirectory + fileName;
 
@@ -29,16 +56,19 @@ export const addPlace = (title, imageUri) => {
       const dbInsert = await insertPlace(
         title,
         newPath,
-        "Dummy Address",
-        0.1,
-        0.15
+        address,
+        location.latitude,
+        location.longitude
       );
+      console.log("inserted", dbInsert);
       dispatch({
         type: ADD_PLACE,
         placeDetails: {
           id: dbInsert.insertId,
           title: title,
           image: newPath,
+          address: address,
+          coords: location,
         },
       });
     } catch (error) {

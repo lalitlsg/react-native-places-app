@@ -10,6 +10,8 @@ import { setPlaces } from "../store/places-action";
 const PlacesListScreen = (props) => {
   const placesList = useSelector((state) => state.places.places);
 
+  console.log("Places List", placesList);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const PlacesListScreen = (props) => {
             });
           }}
           title={itemData.item.title}
-          address={null}
+          address={itemData.item.address}
           image={itemData.item.imageUri}
         />
       )}
