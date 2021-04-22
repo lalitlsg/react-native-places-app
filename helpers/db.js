@@ -57,6 +57,7 @@ export const fetchPlaces = () => {
   return promise;
 };
 
+// for deleting place from db
 export const deletePlace = (id) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
