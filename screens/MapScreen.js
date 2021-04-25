@@ -8,22 +8,19 @@ const MapScreen = (props) => {
   const readonly = props.navigation.getParam("readonly");
   const initialLocation = props.navigation.getParam("initialLocation");
 
-  const mapRegion = {
+  const [selectedLocation, setSelectedLocation] = useState({
     latitude: initialLocation ? initialLocation.latitude : 20.4388239,
     longitude: initialLocation ? initialLocation.longitude : 78.73965,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
-  };
-
-  console.log(mapRegion);
-
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
+  });
 
   const selectLocationHandler = (event) => {
     if (readonly) {
       return;
     }
     setSelectedLocation({
+      ...selectedLocation,
       latitude: event.nativeEvent.coordinate.latitude,
       longitude: event.nativeEvent.coordinate.longitude,
     });
@@ -52,7 +49,7 @@ const MapScreen = (props) => {
 
   return (
     <MapView
-      region={mapRegion}
+      region={selectedLocation}
       style={styles.screen}
       onPress={selectLocationHandler}
     >
